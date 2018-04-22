@@ -1,19 +1,17 @@
 package info.econsim.restservice01;
 
-import static org.assertj.core.api.Assertions.*;
+import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.List;
 
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.data.domain.Example;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import info.econsim.restservice01.data.User;
+import info.econsim.restservice01.data.EsUser;
 import info.econsim.restservice01.service.Users;
 
 @RunWith(SpringRunner.class)
@@ -23,22 +21,20 @@ public class UsersTest {
 	@Autowired
 	Users usersRepository;
 
-	User dave, oliver, carter;
+	EsUser dummyUser;
 
 	@Before
 	public void setUp() {
 
 		usersRepository.deleteAll();
 
-		dave = usersRepository.save(new User("Dave", "Matthews"));
-		oliver = usersRepository.save(new User("Oliver August", "Matthews"));
-		carter = usersRepository.save(new User("Carter", "Beauford"));
+		dummyUser = usersRepository.save(new EsUser("Dave", "Matthews"));
 	}
 
 	@Test
 	public void setsIdOnSave() {
 
-		User dave = usersRepository.save(new User("Dave", "Matthews"));
+		EsUser dave = usersRepository.save(new EsUser("Dave", "Matthews"));
 
 		assertThat(dave.id).isNotNull();
 	}
@@ -46,17 +42,17 @@ public class UsersTest {
 	@Test
 	public void findsByLastName() {
 
-		List<User> result = usersRepository.findByLastName("Beauford");
+		Iterable<EsUser> result = usersRepository.findByEmail("ttt");
 
-		assertThat(result).hasSize(1).extracting("firstName").contains("Carter");
+		assertThat(result).hasSize(1).extracting("name").contains("Carter");
 	}
 
 	@Test
 	public void findsByExample() {
 
-		User probe = new User(null, "Matthews");
+		EsUser probe = new EsUser(null, "Matthews");
 
-		List<User> result = usersRepository.findAll(Example.of(probe));
+		Iterable<EsUser> result = usersRepository.findAll();
 
 		assertThat(result).hasSize(2).extracting("firstName").contains("Dave", "Oliver August");
 	}
