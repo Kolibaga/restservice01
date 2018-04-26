@@ -31,7 +31,7 @@ public class EsUser {
     @Override
     public String toString() {
         return String.format(
-                "Customer[id=%s, email='%s', name='%s']",
+                "EsUser[id=%s, email='%s', name='%s']",
                 id, email, name);
     }
 }
