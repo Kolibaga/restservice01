@@ -14,7 +14,7 @@ public class EsUser {
     @Id
     @GeneratedValue(strategy=GenerationType.AUTO)
     @Getter @Setter
-    public String id;
+    public Long id;
 
     @Getter @Setter
     public String email;
