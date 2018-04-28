@@ -33,6 +33,10 @@
 <!-- 			<groupId>org.springframework.boot</groupId> -->
 <!-- 			<artifactId>spring-boot-starter-jooq</artifactId> -->
 <!-- 		</dependency> -->
+    <dependency>
+      <groupId>org.springframework.boot</groupId>
+      <artifactId>spring-boot-starter-actuator</artifactId>
+    </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
@@ -70,8 +74,23 @@
 			<groupId>org.projectlombok</groupId>
 			<artifactId>lombok</artifactId>
 		</dependency>
+    <dependency>
+      <groupId>org.jboss.arquillian.junit</groupId>
+      <artifactId>arquillian-junit-standalone</artifactId>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.arquillian.cube</groupId>
+      <artifactId>arquillian-cube-openshift</artifactId>
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <groupId>io.undertow</groupId>
+          <artifactId>undertow-core</artifactId>
+        </exclusion>
+      </exclusions>
+    </dependency>
 	</dependencies>
-
 	<build>
 		<plugins>
 			<plugin>
@@ -104,5 +123,24 @@
 <!--             <url>https://repo.spring.io/libs-release</url> -->
 <!--         </pluginRepository> -->
 <!--     </pluginRepositories> -->
+  <profiles>
+    <profile>
+      <id>openshift-it</id>
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-failsafe-plugin</artifactId>
+            <configuration>
+              <systemPropertyVariables>
+                <app.name>${project.artifactId}</app.name>
+              </systemPropertyVariables>
+            </configuration>
+          </plugin>
+        </plugins>
+      </build>
+      <activation />
+    </profile>
+  </profiles>
 
 </project>
